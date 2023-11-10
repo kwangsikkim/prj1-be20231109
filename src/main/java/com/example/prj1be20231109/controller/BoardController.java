@@ -3,6 +3,8 @@ package com.example.prj1be20231109.controller;
 import com.example.prj1be20231109.domain.Board;
 import com.example.prj1be20231109.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +50,13 @@ public class BoardController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PutMapping("edit")
+    public void edit(@RequestBody Board board) {
+//        System.out.println("board = " + board);
+        service.update(board);
+    }
+
 }
 
 
