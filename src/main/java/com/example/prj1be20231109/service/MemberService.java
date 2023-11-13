@@ -25,6 +25,9 @@ public class MemberService {
     public String getEmail(String email) {
         return mapper.selectEmail(email);
     }
+    public String getNickName(String nickName) {
+        return mapper.selectNickName(nickName);
+    }
 
     public boolean validate(Member member) {
         if (member == null) {
@@ -32,6 +35,9 @@ public class MemberService {
         }
 
         if (member.getEmail().isBlank()) {
+            return false;
+        }
+        if (member.getNickName().isBlank()) {
             return false;
         }
 
@@ -66,4 +72,5 @@ public class MemberService {
 
         return mapper.update(member) == 1;
     }
+
 }
