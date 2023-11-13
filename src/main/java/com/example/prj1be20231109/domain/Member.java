@@ -11,4 +11,5 @@ public class Member {
     private String password;
     private String email;
     private LocalDateTime inserted;
+
 }
