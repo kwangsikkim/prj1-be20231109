@@ -1,10 +1,7 @@
 package com.example.prj1be20231109.mapper;
 
 import com.example.prj1be20231109.domain.Member;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
@@ -51,6 +48,17 @@ public interface MemberMapper {
             WHERE id =#{id}
             """)
     int deleteById(String id);
+
+
+    @Update("""
+            UPDATE member
+            SET 
+                password = #{password},
+                email = #{email}
+            WHERE id = #{id}
+            
+            """)
+    int update(Member member);
 }
 
 

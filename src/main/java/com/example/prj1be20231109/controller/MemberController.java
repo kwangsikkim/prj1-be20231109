@@ -1,6 +1,7 @@
 package com.example.prj1be20231109.controller;
 
 
+import com.example.prj1be20231109.domain.Board;
 import com.example.prj1be20231109.domain.Member;
 import com.example.prj1be20231109.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +70,19 @@ public class MemberController {
         }
         return ResponseEntity.internalServerError().build();
 
+    }
+
+    @PutMapping("edit")
+    public ResponseEntity edit(@RequestBody Member member) {
+        if (service.validate(member)) {
+            if (service.update(member)) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.internalServerError().build();
+            }
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }
