@@ -51,13 +51,16 @@ public interface MemberMapper {
 
 
     @Update("""
-            UPDATE member
-            SET 
-                password = #{password},
-                email = #{email}
-            WHERE id = #{id}
-            
-            """)
+        <script>
+        UPDATE member
+        SET 
+          <if test="password != ''">
+          password = #{password},
+          </if>
+          email = #{email}
+        WHERE id = #{id}
+        </script>
+        """)
     int update(Member member);
 }
 

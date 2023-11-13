@@ -58,6 +58,12 @@ public class MemberService {
     }
 
     public boolean update(Member member) {
+//        Member oldMember = mapper.selectById(member.getId());
+//
+//        if (member.getPassword().equals("")) {
+//            member.setPassword(oldMember.getPassword());
+//        }
+
         return mapper.update(member) == 1;
     }
 }
