@@ -62,6 +62,6 @@ public class BoardService {
 
         return board.getWriter().equals(login.getId());
     }
-
-
 }
+
+
