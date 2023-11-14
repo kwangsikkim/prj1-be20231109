@@ -88,6 +88,7 @@ public class BoardController {
             }
         } else {
             return ResponseEntity.badRequest().build();
+
         }
     }
 }
