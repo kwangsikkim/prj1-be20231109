@@ -4,6 +4,7 @@ package com.example.prj1be20231109.controller;
 import com.example.prj1be20231109.domain.Board;
 import com.example.prj1be20231109.domain.Member;
 import com.example.prj1be20231109.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -102,6 +103,13 @@ public class MemberController {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PostMapping("logout")
+    public void logout(HttpSession session) {
+        if (session != null) {
+            session.invalidate();
         }
     }
 }
