@@ -41,6 +41,11 @@ public class CommentService {
         return mapper.selectByBoardId(boardId);
 
     }
+
+    public void remove(Integer id) {
+
+        mapper.deleteById(id);
+    }
 }
 
 
