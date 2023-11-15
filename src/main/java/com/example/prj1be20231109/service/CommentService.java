@@ -50,6 +50,7 @@ public class CommentService {
 
 
     public boolean hasAccess(Integer id, Member login) {
+
         Comment comment = mapper.selectById(id);
 
         return comment.getMemberId().equals(login.getId());
