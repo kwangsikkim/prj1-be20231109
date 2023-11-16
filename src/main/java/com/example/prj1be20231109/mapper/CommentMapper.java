@@ -15,30 +15,36 @@ public interface CommentMapper {
         """)
     int insert(Comment comment);
 
-
     @Select("""
-            SELECT * FROM comment
-            WHERE boardId = #{boardId}
-            """)
+        SELECT
+            c.id,
+            c.comment,
+            c.inserted,
+            c.boardId,
+            c.memberId,
+            m.nickName memberNickName
+        FROM comment c JOIN member m ON c.memberId = m.id
+        WHERE boardId = #{boardId}
+        ORDER BY c.id DESC
+        """)
     List<Comment> selectByBoardId(Integer boardId);
 
-
     @Delete("""
-            DELETE FROM comment
-            WHERE id = #{id}
-            """)
+        DELETE FROM comment
+        WHERE id = #{id}
+        """)
     int deleteById(Integer id);
 
     @Select("""
-            SELECT * FROM comment
-            WHERE id = #{id}
-            """)
+        SELECT * FROM comment
+        WHERE id = #{id}
+        """)
     Comment selectById(Integer id);
 
     @Update("""
-            UPDATE comment
+        UPDATE comment
             SET comment = #{comment}
-            WHERE id =#{id}
-            """)
+        WHERE id = #{id}
+        """)
     int update(Comment comment);
 }
