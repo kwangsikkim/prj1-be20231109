@@ -85,6 +85,7 @@ public class MemberController {
 
     @DeleteMapping
     public ResponseEntity delete(String id,
+                                 HttpSession session,
                                  @SessionAttribute(value = "login", required = false) Member login) {
 
         if (login == null) {
@@ -100,6 +101,8 @@ public class MemberController {
         System.out.println("id = " + id);
 
         if (service.deleteMember(id)) {
+            session.invalidate();
+
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.internalServerError().build();
