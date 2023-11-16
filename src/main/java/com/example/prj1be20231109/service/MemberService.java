@@ -3,6 +3,7 @@ package com.example.prj1be20231109.service;
 import com.example.prj1be20231109.domain.Auth;
 import com.example.prj1be20231109.domain.Member;
 import com.example.prj1be20231109.mapper.BoardMapper;
+import com.example.prj1be20231109.mapper.CommentMapper;
 import com.example.prj1be20231109.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class MemberService {
 
     private final MemberMapper mapper;
     private final BoardMapper boardMapper;
+    public final CommentMapper commentMapper;
+    private final BoardService boardService;
 
     public boolean add(Member member) {
         return mapper.insert(member) == 1;
@@ -65,7 +68,17 @@ public class MemberService {
     }
 
     public boolean deleteMember(String id) {
+        // 이 멤버가 작성한 댓글 삭제
+        commentMapper.deleteByMemberId(id);
+
         // 1. 해당 멤버가 작성한 게시물 삭제
+
+        // 이 멤버가 작성한 게시물 번호들 조회
+
+        List<Integer> boardIdList = boardMapper.selectIdListByMemberId(id);
+        // 게시문 번호등 loop 각 게시물 삭제(boardService.remove)
+        boardIdList.forEach((boardId) -> boardService.remove(boardId));
+
         boardMapper.deleteByWriter(id);
 
 
