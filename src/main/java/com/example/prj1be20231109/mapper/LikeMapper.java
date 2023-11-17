@@ -5,6 +5,13 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
+import java.util.Map;
+import java.util.Objects;
 
 @Mapper
 public interface LikeMapper {
@@ -28,4 +35,14 @@ public interface LikeMapper {
             WHERE boardId = #{boardId}
             """)
     int countByBoardId(Integer boardId);
+
+
+    @Select("""
+            SELECT * FROM boardlike
+            WHERE boardId = #{boardId}
+            AND memberId = #{memberId}
+            """)
+    Like selectByBoardIdAndMemberId(Integer boardId, String memberId);
 }
+
+        

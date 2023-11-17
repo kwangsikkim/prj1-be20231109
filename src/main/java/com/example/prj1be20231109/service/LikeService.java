@@ -22,7 +22,6 @@ public class LikeService {
         // 다시 누르면 : delete
 
         int count = 0;
-
         if (mapper.delete(like) == 0) {
             count = mapper.insert(like);
         }
@@ -31,5 +30,26 @@ public class LikeService {
 
         return Map.of("like", count == 1,
                 "countLike", countLike);
+
+
+    }
+
+    public Map<String, Object> get(Integer boardId, Member login) {
+        int countLike = mapper.countByBoardId(boardId);
+
+        Like like = null;
+        if (login != null) {
+            like = mapper.selectByBoardIdAndMemberId(boardId, login.getId());
+        }
+
+        return Map.of("like", like != null, "countLike", countLike);
     }
 }
+
+
+
+
+
+
+
+
