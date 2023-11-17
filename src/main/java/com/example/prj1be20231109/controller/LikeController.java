@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.DocFlavor;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,15 +19,15 @@ public class LikeController {
     private final LikeService service;
 
     @PostMapping
-    public ResponseEntity like(@RequestBody Like like,
-                               @SessionAttribute(value = "login", required = false) Member login) {
+    public ResponseEntity<Map<String, Object>> like(@RequestBody Like like,
+                                    @SessionAttribute(value = "login", required = false) Member login) {
 
         if (login == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
 
-        service.update(like, login);
-        return null;
+        return ResponseEntity.ok(service.update(like, login));
+
     }
 }
