@@ -1,13 +1,10 @@
 package com.example.prj1be20231109.controller;
 
-
-import com.example.prj1be20231109.domain.Board;
 import com.example.prj1be20231109.domain.Member;
 import com.example.prj1be20231109.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -18,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/member")
 public class MemberController {
-
     private final MemberService service;
 
     @PostMapping("signup")
@@ -67,16 +63,15 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<Member> view(String id, @SessionAttribute(value = "login", required = false) Member login) {
-
+    public ResponseEntity<Member> view(String id,
+                                       @SessionAttribute(value = "login", required = false) Member login) {
         if (login == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // 401
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         if (!service.hasAccess(id, login)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-
 
         Member member = service.getMember(id);
 
@@ -87,24 +82,20 @@ public class MemberController {
     public ResponseEntity delete(String id,
                                  HttpSession session,
                                  @SessionAttribute(value = "login", required = false) Member login) {
-
         if (login == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // 401
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401
         }
 
         if (!service.hasAccess(id, login)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403
         }
 
-        // TODO : 로그인 했는지? -> 안했으면 401
-        // TODO : 자기 정보인지? -> 자기정보 아니면 403
-        System.out.println("id = " + id);
-
         if (service.deleteMember(id)) {
             session.invalidate();
 
             return ResponseEntity.ok().build();
         }
+
         return ResponseEntity.internalServerError().build();
 
     }
@@ -112,16 +103,13 @@ public class MemberController {
     @PutMapping("edit")
     public ResponseEntity edit(@RequestBody Member member,
                                @SessionAttribute(value = "login", required = false) Member login) {
-
         if (login == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); //401
         }
 
         if (!service.hasAccess(member.getId(), login)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403
         }
-
-        // TODO: 로그인 했는지? 자기정보인지?
 
         if (service.update(member)) {
             return ResponseEntity.ok().build();
@@ -153,20 +141,6 @@ public class MemberController {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

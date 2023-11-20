@@ -37,20 +37,15 @@ public class CommentService {
     }
 
     public List<Comment> list(Integer boardId) {
-
         return mapper.selectByBoardId(boardId);
-
     }
 
     public boolean remove(Integer id) {
 
         return mapper.deleteById(id) == 1;
-
     }
 
-
     public boolean hasAccess(Integer id, Member login) {
-
         Comment comment = mapper.selectById(id);
 
         return comment.getMemberId().equals(login.getId());
@@ -61,7 +56,8 @@ public class CommentService {
     }
 
     public boolean updateValidate(Comment comment) {
-        if (comment == null){
+        if (comment == null) {
+            return false;
         }
 
         if (comment.getId() == null) {
@@ -71,19 +67,8 @@ public class CommentService {
         if (comment.getComment() == null || comment.getComment().isBlank()) {
             return false;
         }
+
         return true;
     }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

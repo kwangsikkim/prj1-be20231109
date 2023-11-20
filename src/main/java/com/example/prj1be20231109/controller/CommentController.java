@@ -35,6 +35,7 @@ public class CommentController {
         } else {
             return ResponseEntity.badRequest().build();
         }
+
     }
 
     @GetMapping("list")
@@ -42,11 +43,9 @@ public class CommentController {
         return service.list(boardId);
     }
 
-
     @DeleteMapping("{id}")
     public ResponseEntity remove(@PathVariable Integer id,
-                                         @SessionAttribute(value = "login", required = false) Member login) {
-
+                                 @SessionAttribute(value = "login", required = false) Member login) {
         if (login == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -58,15 +57,15 @@ public class CommentController {
                 return ResponseEntity.internalServerError().build();
             }
         } else {
-            return ResponseEntity.status((HttpStatus.FORBIDDEN)).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
     }
 
     @PutMapping("edit")
     public ResponseEntity update(@RequestBody Comment comment,
-                       @SessionAttribute(value = "login", required = false) Member login) {
-
-        if (login == null ){
+                                 @SessionAttribute(value = "login", required = false) Member login) {
+        if (login == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
@@ -81,23 +80,10 @@ public class CommentController {
                 return ResponseEntity.internalServerError().build();
             }
         } else {
+
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
+
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

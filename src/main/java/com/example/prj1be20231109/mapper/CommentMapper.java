@@ -49,14 +49,14 @@ public interface CommentMapper {
     int update(Comment comment);
 
     @Delete("""
-            DELETE FROM comment
-            WHERE boardId = #{boardId}
-            """)
+        DELETE FROM comment
+        WHERE boardId = #{boardId}
+        """)
     int deleteByBoardId(Integer boardId);
 
     @Delete("""
-            DELETE FROM comment
-            WHERE memberId = #{memberId}
-            """)
+        DELETE FROM comment
+        WHERE memberId = #{memberId}
+        """)
     int deleteByMemberId(String memberId);
 }
