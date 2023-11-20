@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,16 @@ public class BoardController {
     private final BoardService service;
 
     @PostMapping("add")
-    public ResponseEntity add(@RequestBody Board board,
+    public ResponseEntity add(Board board,
+                              @RequestParam(value = "files[]", required = false) MultipartFile[] files,
                               @SessionAttribute(value = "login", required = false) Member login) {
+
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                System.out.println("files = " + files[i].getOriginalFilename());
+                System.out.println("files.getSize = " + files[i].getSize());
+            }
+        }
 
         if (login == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -42,7 +51,7 @@ public class BoardController {
     // /api/board/list?k=java
     @GetMapping("list")
     public Map<String, Object> list(@RequestParam(value = "p", defaultValue = "1") Integer page,
-                                    @RequestParam(value = "k" ,defaultValue = "") String keyword) {
+                                    @RequestParam(value = "k", defaultValue = "") String keyword) {
 
 
         return service.list(page, keyword);
