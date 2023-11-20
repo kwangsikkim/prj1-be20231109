@@ -1,6 +1,7 @@
 package com.example.prj1be20231109.service;
 
 import com.example.prj1be20231109.domain.Board;
+import com.example.prj1be20231109.domain.BoardFile;
 import com.example.prj1be20231109.domain.Member;
 import com.example.prj1be20231109.mapper.BoardMapper;
 import com.example.prj1be20231109.mapper.CommentMapper;
@@ -36,21 +37,17 @@ public class BoardService {
 
     @Value("${image.file.prefix}")
     private String urlPrefix;
-
     @Value("${aws.s3.bucket.name}")
     private String bucket;
 
-
     public boolean save(Board board, MultipartFile[] files, Member login) throws IOException {
-
-
+        //
         board.setWriter(login.getId());
 
         int cnt = mapper.insert(board);
 
+        // boardFile 테이블에 files 정보 저장
         if (files != null) {
-            // boardFile 테이블에 files 정보 저장
-            // 정보: boardId(게시물 번호), name(파일 이름) + id(pk)
             for (int i = 0; i < files.length; i++) {
                 // boardId, name
                 fileMapper.insert(board.getId(), files[i].getOriginalFilename());
@@ -58,7 +55,6 @@ public class BoardService {
                 // 실제 파일을 S3 bucket에 upload
                 // 일단 local에 저장
                 upload(board.getId(), files[i]);
-
             }
         }
 
@@ -101,9 +97,6 @@ public class BoardService {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> pageInfo = new HashMap<>();
 
-        // int countAll = mapper.countAll()
-
-
         int countAll = mapper.countAll("%" + keyword + "%");
         int lastPageNumber = (countAll - 1) / 10 + 1;
         int startPageNumber = (page - 1) / 10 * 10 + 1;
@@ -129,16 +122,18 @@ public class BoardService {
     }
 
     public Board get(Integer id) {
-        Board board= mapper.selectById(id);
+        Board board = mapper.selectById(id);
 
-        List<String> fileNames = fileMapper.selectNamesByBoardId(id);
+        List<BoardFile> boardFiles = fileMapper.selectNamesByBoardId(id);
 
-        fileNames = fileNames.stream().map(name -> urlPrefix + "prj1/" + id + "/" + name)
-                        .toList();
+        for (BoardFile boardFile : boardFiles) {
+            String url = urlPrefix + "prj1/" + id + "/" + boardFile.getName();
+            boardFile.setUrl(url);
+        }
 
-        board.setFileNames(fileNames);
+        board.setFiles(boardFiles);
+
         return board;
-
     }
 
     public boolean remove(Integer id) {
