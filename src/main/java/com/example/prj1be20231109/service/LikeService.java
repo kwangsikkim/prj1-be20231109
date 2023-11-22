@@ -47,11 +47,3 @@ public class LikeService {
         return Map.of("like", like != null, "countLike", countLike);
     }
 }
-
-
-
-
-
-
-
-
